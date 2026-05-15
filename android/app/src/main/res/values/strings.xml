@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NammaMistri</string>
+    <string name="title_activity_main">NammaMistri</string>
+    <string name="package_name">com.yourname.nammamistri</string>
+    <string name="custom_url_scheme">com.yourname.nammamistri</string>
+</resources>

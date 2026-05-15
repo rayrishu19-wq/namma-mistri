@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namma-Mistri | ನಮ್ಮ ಮಿಸ್ತ್ರಿ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div style="text-align:left;">
+                <h1>Namma-Mistri 🏗️</h1>
+                <p>ನಮ್ಮ ಮಿಸ್ತ್ರಿ</p>
+            </div>
+            <button class="btn-icon" onclick="openSettings()" style="background:rgba(255,255,255,0.2); border-radius:50%; width:40px; height:40px; border:none; color:white; cursor:pointer;">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+        <div class="site-selector">
+            <select id="activeSite" onchange="switchSite()">
+                <!-- Sites will be loaded here -->
+            </select>
+            <button onclick="addNewSite()" title="Add New Site">+</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Tab 1: Material Calculator -->
+        <section id="calc" class="tab-content active">
+            <div class="card">
+                <h2><i class="fas fa-calculator"></i> Material Calc (ಲೆಕ್ಕಾಚಾರ)</h2>
+                
+                <div class="input-group">
+                    <label>Length (ft) - ಉದ್ದ</label>
+                    <input type="number" id="length" placeholder="Enter Length">
+                </div>
+
+                <div class="input-group">
+                    <label>Height (ft) - ಎತ್ತರ</label>
+                    <input type="number" id="height" placeholder="Enter Height">
+                </div>
+
+                <div class="input-group">
+                    <label>Wall Thickness - ಗೋಡೆ ದಪ್ಪ</label>
+                    <select id="thickness">
+                        <option value="9">9-inch (ದೊಡ್ಡ ಗೋಡೆ)</option>
+                        <option value="4.5">4.5-inch (ಸಣ್ಣ ಗೋಡೆ)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateMaterials()">
+                    <i class="fas fa-check-circle"></i> Calculate (ಲೆಕ್ಕಾಚಾರ ಮಾಡಿ)
+                </button>
+
+                <div id="calc-result" class="result-box" style="display:none;">
+                    <div class="result-item">
+                        <span>Bricks (ಇಟ್ಟಿಗೆಗಳು)</span>
+                        <span id="res-bricks" class="result-val">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Cement Bags (ಸಿಮೆಂಟ್ ಚೀಲ)</span>
+                        <span id="res-cement" class="result-val">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Sand Loads (ಮರಳು)</span>
+                        <span id="res-sand" class="result-val">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floor Tiling Calculator -->
+            <div class="card">
+                <h2><i class="fas fa-th"></i> Floor Tiling (ಟೈಲ್ಸ್ ಲೆಕ್ಕ)</h2>
+                <div class="input-group">
+                    <label>Room Length (ft) - ಉದ್ದ</label>
+                    <input type="number" id="floor-len" placeholder="e.g. 10">
+                </div>
+                <div class="input-group">
+                    <label>Room Width (ft) - ಅಗಲ</label>
+                    <input type="number" id="floor-wid" placeholder="e.g. 10">
+                </div>
+                <button class="btn btn-secondary" onclick="calculateFloor()">
+                    <i class="fas fa-th-large"></i> Calculate Tiles
+                </button>
+                <div id="floor-result" class="result-box" style="display:none;">
+                    <div class="result-item"><span>Tiles (2x2 ft)</span><span id="res-tiles-2x2" class="result-val">0</span></div>
+                    <div class="result-item"><span>Tiles (1x1 ft)</span><span id="res-tiles-1x1" class="result-val">0</span></div>
+                </div>
+            </div>
+
+            <!-- Roof Slab Calculator -->
+            <div class="card">
+                <h2><i class="fas fa-layer-group"></i> Roof Slab (ರೂಫ್ ಕಾಂಕ್ರೀಟ್)</h2>
+                <div class="input-group">
+                    <label>Total Area (sq.ft) - ವಿಸ್ತೀರ್ಣ</label>
+                    <input type="number" id="roof-area" placeholder="e.g. 1000">
+                </div>
+                <div class="input-group">
+                    <label>Slab Thickness (inches) - ದಪ್ಪ</label>
+                    <input type="number" id="roof-thick" value="5">
+                </div>
+                <button class="btn btn-primary" onclick="calculateRoof()">
+                    <i class="fas fa-fill-drip"></i> Calculate Concrete
+                </button>
+                <div id="roof-result" class="result-box" style="display:none;">
+                    <div class="result-item"><span>Cement Bags</span><span id="res-roof-cement" class="result-val">0</span></div>
+                    <div class="result-item"><span>Sand (loads)</span><span id="res-roof-sand" class="result-val">0</span></div>
+                    <div class="result-item"><span>Aggregate (ಜಲ್ಲಿ)</span><span id="res-roof-agg" class="result-val">0</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Labor Diary -->
+        <section id="labor" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-users"></i> Labor Diary (ಕೆಲಸಗಾರರ ಪಟ್ಟಿ)</h2>
+                <div class="input-group">
+                    <input type="text" id="laborer-name" placeholder="Name (ಹೆಸರು)">
+                </div>
+                <div class="input-group">
+                    <input type="number" id="daily-wage" placeholder="Daily Wage (ದಿನಗೂಲಿ)">
+                </div>
+                <button class="btn btn-secondary" onclick="addLaborer()">
+                    <i class="fas fa-plus"></i> Add Worker (ಸೇರಿಸಿ)
+                </button>
+            </div>
+
+            <div id="labor-list">
+                <!-- Laborers will be listed here -->
+            </div>
+        </section>
+
+        <!-- Tab 3: Site Photos -->
+        <section id="photos" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-camera"></i> Site Photos (ಸೈಟ್ ಫೋಟೋಗಳು)</h2>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    Take photos to show work progress to the owner.
+                </p>
+                <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this)">
+                <button class="btn btn-primary" onclick="document.getElementById('photo-input').click()">
+                    <i class="fas fa-camera-retro"></i> Take Photo (ಫೋಟೋ ತೆಗೆಯಿರಿ)
+                </button>
+            </div>
+
+            <div id="photo-gallery" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <!-- Photos will appear here -->
+            </div>
+        </section>
+
+        <!-- Tab 4: Mistri AI -->
+        <section id="ai" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-robot"></i> Mistri AI (ಸಹಾಯ)</h2>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    Ask anything about construction in Kannada or English.
+                </p>
+                <div id="chat-window" style="height: 300px; overflow-y: auto; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="color: var(--safety-orange);">Mistri AI: Hello! How can I help you today?</div>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="chat-input" placeholder="Ask a question...">
+                </div>
+                <button class="btn btn-primary" onclick="askAI()">
+                    <i class="fas fa-paper-plane"></i> Send (ಕಳುಹಿಸಿ)
+                </button>
+            </div>
+        </section>
+
+        <!-- Tab 5: Standard Rates & Settings -->
+        <section id="rates" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-cog"></i> App Settings (ಸೆಟ್ಟಿಂಗ್‌ಗಳು)</h2>
+                
+                <div class="input-group">
+                    <label>Gemini API Key (GenAI)</label>
+                    <input type="password" id="api-key" placeholder="Paste Gemini API Key here...">
+                    <p style="font-size:0.65rem; color:var(--text-secondary); margin-top:5px;">
+                        Get free key from: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--safety-orange);">Google AI Studio</a>
+                    </p>
+                </div>
+
+                <hr style="border:1px solid #444; margin:20px 0;">
+                
+                <h3>Material Rates (ದರಗಳು)</h3>
+                <div class="input-group">
+                    <label>Cement (per bag)</label>
+                    <input type="number" id="rate-cement" value="450">
+                </div>
+                <div class="input-group">
+                    <label>Bricks (per 1000)</label>
+                    <input type="number" id="rate-bricks" value="8000">
+                </div>
+                <div class="input-group">
+                    <label>Sand (per load)</label>
+                    <input type="number" id="rate-sand" value="12000">
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()">
+                    <i class="fas fa-save"></i> Save All (ಎಲ್ಲವನ್ನೂ ಉಳಿಸಿ)
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="showTab('calc', this)">
+            <i class="fas fa-calculator"></i>
+            <span>Calc (ಲೆಕ್ಕ)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showTab('labor', this)">
+            <i class="fas fa-users"></i>
+            <span>Team (ತಂಡ)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showTab('photos', this)">
+            <i class="fas fa-camera"></i>
+            <span>Photos (ಚಿತ್ರ)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showTab('ai', this)">
+            <i class="fas fa-robot"></i>
+            <span>AI (ಸಹಾಯ)</span>
+        </a>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
+</html>
